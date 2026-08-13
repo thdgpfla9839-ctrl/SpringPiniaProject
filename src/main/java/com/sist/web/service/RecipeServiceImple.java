@@ -44,7 +44,7 @@ public class RecipeServiceImple implements RecipeService{
 		final int BLOCK=10;
 		int startPage=((page-1)/BLOCK*BLOCK)+1;
 		int endPage=((page-1)/BLOCK*BLOCK)+BLOCK;
-		if(endPage<totalpage)
+		if(endPage>totalpage)
 			endPage=totalpage;
 		int[] pages = {page,totalpage,startPage,endPage};
 		return pages;

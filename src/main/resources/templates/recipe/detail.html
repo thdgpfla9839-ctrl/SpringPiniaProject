@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<style type="text/css">
+.container{
+   margin-top: 50px;
+}
+.row {
+  margin: 0px auto;
+  width: 960px;
+}
+p {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.a-link{
+  cursor: pointer;
+}
+</style>
+<script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/vue-demi"></script>
+<script src="https://unpkg.com/pinia@2.1.7/dist/pinia.iife.prod.js"></script>
+<script th:inline="javascript">
+const NO=/*[[${no}]]*/0
+</script>
+</head>
+<body>
+   <div class="container">
+     <div class="row">
+       <table class="table">
+        <tr>
+         <td colspan="3" class="text-center">
+           <img :src="store.detail.poster" style="width: 750px;height: 350px;object-fit:cover">
+         </td>
+        </tr>
+        <tr>
+         <td colspan="3" class="text-center">
+           <h3>{{store.detail.title}}</h3>
+         </td>
+        </tr>
+        <tr>
+         <td colspan="3" class="text-center">
+           {{store.detail.content}}
+         </td>
+        </tr>
+        <tr>
+         <td colspan="3" class="text-right">
+           <a href="javascript:history.back()"
+             class="btn btn-sm btn-danger">목록</a>
+         </td>
+        </tr>
+        <tr>
+          <td class="text-center"><img src="/icon/a1.png"></td>
+          <td class="text-center"><img src="/icon/a2.png"></td>
+          <td class="text-center"><img src="/icon/a3.png"></td>
+        </tr>
+        <tr>
+          <td class="text-center">{{store.detail.info1}}</td>
+          <td class="text-center">{{store.detail.info2}}</td>
+          <td class="text-center">{{store.detail.info3}}</td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+         <td colspan="2"><h3>[조리순서]</h3></td>
+        </tr>
+        <tr>
+          <td>
+            <table class="table" v-for="(m,index) in store.mList" :key="index">
+              <tr>
+                <td width=80% class="text-left">{{m}}</td>
+                <td width="20%" class="text-right">
+                  <img :src="store.iList[index]" style="width:170px;height: 120px"
+                   class="img-rounded"
+                  >
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <table class="table">
+        <tr>
+          <td colspan="2"><h3>[레시피 작성자]</h3></td>
+        </tr>
+        <tr>
+          <td width=30% class="text-center" rowspan="2">
+            <img :src="store.detail.chef_poster"
+              style="width: 60px;height: 60px"
+              class="img-circle"
+             >
+          </td>
+          <td width=70%><b>{{store.detail.chef}}</b></td>
+        </tr>
+        <tr>
+          <td width=70%>{{store.detail.chef_profile}}</td>
+        </tr>
+      </table>
+     </div>
+   </div>
+   <script src="/vue/axios.js"></script>
+   <script src="/vue/recipe/recipeStore.js"></script>
+   <script>
+   const {createApp,onMounted,ref} = Vue
+   const {createPinia}=Pinia
+   const detailApp=createApp({
+	   setup(){
+		   const store=useRecipeStore()
+		   onMounted(()=>{
+			   store.no=NO
+			   //console.log("no:"+store.no)
+			   store.recipeDetailData()
+		   })
+		   return {
+			   store
+		   }
+	   }
+   })
+   detailApp.use(createPinia())
+   detailApp.mount('.container')
+   </script>
+</body>
+</html>

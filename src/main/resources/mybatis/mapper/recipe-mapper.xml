@@ -22,7 +22,7 @@
   SELECT no,poster,title,chef
   FROM recipe
   <include refid="where-no"/>
-  ORDRER BY no ASC
+  ORDER BY no DESC
   OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY
  </select>
  
