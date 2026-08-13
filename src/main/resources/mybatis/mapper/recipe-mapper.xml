@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sist.web.mapper.RecipeMapper">
+ <!-- 목록 출력
+       Mapper 연결할 때 
+       id : 메소드명
+       resulttype : return형
+       parameterType : 매개변수
+       
+       => public List<RecipeVO> recipeListData(int start)
+        -->
+        
+<!-- 반복코드  include -->
+<sql id="where-no">
+         WHERE no IN(SELECT no FROM recipe 
+               INTERSECT 
+               SELECT no FROM recipeDetail
+              )
+</sql>
+
+ <select id="recipeListData" resultType="com.sist.web.vo.RecipeVO" parameterType="int">
+  SELECT no,poster,title,chef
+  FROM recipe
+  <include refid="where-no"/>
+  ORDRER BY no ASC
+  OFFSET #{start} ROWS FETCH NEXT 12 ROWS ONLY
+ </select>
+ 
+ <!--  카운트 구하기 -->
+  <select id="recipeCount" resultType="int">
+   SELECT COUNT(*)
+   FROM recipe
+   <include refid="where-no"/>
+  </select>
+  
+ <!--  검색 => Pinia 적용 -->
+</mapper>
